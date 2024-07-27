@@ -1,18 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_print_string.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/07/27 04:04:28 by tndreka          ###   ########.fr       */
+/*   Created: 2024/04/30 19:15:15 by tndreka           #+#    #+#             */
+/*   Updated: 2024/05/04 00:55:39 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "ft_printf.h"
 
-void send_info(int pid,)
+int	ft_print_string(char *str)
+{
+	int	i;
 
-int	main(int ac, char **av)
-{}
+	i = 0;
+	if (!str)
+	{
+		if (write(1, "(null)", 6) == -1)
+			set_flag(1);
+		if (*get_flag())
+			return (-1);
+		return (6);
+	}
+	while (*str)
+	{
+		ft_print_char((int)*str);
+		if (*get_flag())
+			return (-1);
+		++str;
+		++i;
+	}
+	return (i);
+}

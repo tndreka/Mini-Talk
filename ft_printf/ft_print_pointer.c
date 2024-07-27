@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_print_pointer.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/07/27 04:04:28 by tndreka          ###   ########.fr       */
+/*   Created: 2024/05/03 22:54:13 by tndreka           #+#    #+#             */
+/*   Updated: 2024/05/04 00:44:12 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "ft_printf.h"
 
-void send_info(int pid,)
+int	ft_print_pointer(unsigned long n, int base, char *numb)
+{
+	int	index;
 
-int	main(int ac, char **av)
-{}
+	index = 0;
+	index = write(1, "0x", 2);
+	if (index == -1)
+		set_flag(1);
+	if (*get_flag())
+		return (-1);
+	index += ft_print_digit(n, base, numb);
+	return (index);
+}

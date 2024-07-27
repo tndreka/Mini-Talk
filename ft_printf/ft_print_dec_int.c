@@ -1,18 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_print_dec_int.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/07/27 04:04:28 by tndreka          ###   ########.fr       */
+/*   Created: 2024/04/30 19:14:41 by tndreka           #+#    #+#             */
+/*   Updated: 2024/05/04 01:03:45 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "ft_printf.h"
 
-void send_info(int pid,)
+int	ft_print_dec_int(long n)
+{
+	int		i;
 
-int	main(int ac, char **av)
-{}
+	i = 0;
+	if (n < 0)
+	{
+		if (*get_flag())
+			return (-1);
+		i += ft_print_char('-');
+		return (ft_print_dec_int(-n) + 1);
+	}
+	else if (n < 10)
+	{
+		if (*get_flag())
+			return (-1);
+		i += ft_print_char(n + 48);
+	}
+	else
+	{
+		i += ft_print_dec_int(n / 10);
+		i += ft_print_dec_int(n % 10);
+		if (*get_flag())
+			return (-1);
+	}
+	return (i);
+}
