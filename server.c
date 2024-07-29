@@ -6,17 +6,18 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:52:59 by tndreka           #+#    #+#             */
-/*   Updated: 2024/07/27 04:03:10 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/07/29 22:48:09 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+void	get_sig(int sig)
+{
+}
+
 int	main(void)
 {
-	int	id;
-
-	id = getpid();
-	ft_printf("this is my proccess id : %d\n", id);
+	printf("this is my proccess id : %d\n", getpid());
 	return (0);
 }

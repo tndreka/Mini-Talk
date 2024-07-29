@@ -1,25 +1,43 @@
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+
+CFLAGS = -Wall -Wextra -Werror -I./ft_printf
+
 PRINTFDIR = ft_printf/
+
+INCLUDE =  -L ./ft_printf -lftprintf 
+
 CLIENT = client
+
 SERVER = server
-SRC = server.c client.c
-INCLUDE =  -L ./ft__printf_p -lftprintf
-OBJS = ${SRC:.c=.o}
-all: ${NAME}
-${NAME}: ${OBJS}
-	@make -sC ${LIBFTDIR}
+
+SRC_CLIENT = client.c
+
+SRC_SERVER = server.c
+
+OBJS_CLIENT = ${SRC_CLIENT:.c=.o}
+
+OBJS_SERVER = ${SRC_SERVER:.c=.o}
+
+all: ${CLIENT} ${SERVER}
+
+${CLIENT}: ${OBJS_CLIENT}
 	@make -sC ${PRINTFDIR}
-	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${INCLUDE} -g
+	@${CC} ${CFLAGS} -o ${CLIENT} ${OBJS_CLIENT} ${INCLUDE} -g
+
+${CLIENT}: ${OBJS_SERVER}
+	@make -sC ${PRINTFDIR}
+	@${CC} ${CFLAGS} -o ${SERVER} ${OBJS_SERVER} ${INCLUDE} -g
+
 clean:
 	@rm -f ${OBJS}
-	@cd ${LIBFTDIR} && ${MAKE} clean
 	@cd ${PRINTFDIR} && ${MAKE} clean
+
 fclean:
 	${MAKE} clean
 	@rm -f ${NAME}
-	@cd ${LIBFTDIR} && ${MAKE} fclean
 	@cd ${PRINTFDIR} && ${MAKE} fclean
+
 re: fclean all
+
 .PHONY: all clean fclean re

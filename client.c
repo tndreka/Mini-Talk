@@ -6,13 +6,23 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/07/27 04:04:28 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/07/29 22:38:24 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void send_info(int pid,)
+void	send_info(int pid, char *s)
+{
+	int		i;
+	int		j;
+	int		k;
+
+	i = 0;
+	j = 0;
+	k - 0;
+}
 
 int	main(int ac, char **av)
-{}
+{
+}

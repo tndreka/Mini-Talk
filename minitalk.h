@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 03:45:16 by tndreka           #+#    #+#             */
-/*   Updated: 2024/07/27 03:52:19 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/07/29 22:07:08 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,7 @@
 
 //LYbraries
 # include <signal.h>
-# include "ft_print/ft_printf.h"
+# include <stdio.h>
+# include <unistd.h>
+# include "ft_printf/ft_printf.h"
 #endif
