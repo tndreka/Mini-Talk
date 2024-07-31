@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:52:59 by tndreka           #+#    #+#             */
-/*   Updated: 2024/07/29 22:48:09 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/07/31 21:15:44 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 void	get_sig(int sig)
 {
+	
 }
 
 int	main(void)
 {
-	printf("this is my proccess id : %d\n", getpid());
+	ft_printf("this is my proccess id : %d\n", getpid());
+	
 	return (0);
 }
