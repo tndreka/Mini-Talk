@@ -6,45 +6,59 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/07/31 21:14:50 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/01 21:29:16 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_info_per_bit(int pid, char *s)
+// this global variable is used as a flag to notyfy for each signal 
+//that the function receves
+static int	g_sigreciver = 0;
+
+void	signal_keeper(int signb, siginfo_t *info, void *data)
+{
+	static int	i = 0;
+
+	g_sigreciver = 1;
+	if (signb == SIGUSR2)
+		i++;
+	else if (signb == SIGUSR1)
+		printf("bytes recived : %d", (i / 8));
+}
+
+int	signal_check(int counter, int i)
+{
+	g_sigreciver = 0;
+	counter = 20;
+	while (g_sigreciver == 0 && counter > 0)
+	{
+		usleep(50);
+		counter--;
+	}
+	if (g_sigreciver == 0)
+	{
+		printf("SENDING SIGNAL FAILD IN THIS BIT INDEX! ! ! ! %d", i);
+		return (1);
+	}
+	return (0);
+}
+
+int	binary_trick(int pid, char c)
 {
 	int		i;
-	int		len;
-	int		j;
+	int		counter;
 
-	i = 0;
-	len = ft_strlen(s);
-	while (i <= len)
+	i = 7;
+	while (i > 0)
 	{
-		j = 1;
-		while (j < 8)
-		{
-			if ((s[i] >> j) & 1)
-			{
-				if (!(kill(pid, SIGUSR1)))
-				{
-					perror("FAILING IN SENDING SIGNAL");
-					break ;
-				}
-			}
-			else
-			{
-				if (!(kill(pid, SIGUSR2)))
-				{
-					perror("FAILING IN SENDING SIGNAL");
-					break ;
-				}
-			}
-			j++;
-		}
-		i++;
+		if ((c >> i) & 1)
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
+		i--;
 	}
+	signal_check(&counter, i);
 }
 
 int	main(int ac, char **av)
