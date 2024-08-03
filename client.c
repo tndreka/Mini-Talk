@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/03 16:47:28 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/03 18:07:26 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	signal_keeper(int signb, siginfo_t *info, void *data)
 {
 	static int	i = 0;
 
+	(void)data;
+	(void)info;
 	g_sigreciver = 1;
 	if (signb == SIGUSR2)
 		i++;
@@ -47,18 +49,24 @@ int	signal_check(int counter)
 void	binary_trick(int pid, char c)
 {
 	int		i;
-	int		counter;
+
 
 	i = 7;
-	while (i > 0)
+	while (i >= 0)
 	{
-		if ((c >> i) & 1)
+		printf("i: %d\n", i);
+		if (((c >> i) & 1) == 1){
 			kill(pid, SIGUSR1);
-		else
+			printf("HEREB\n");
+		}
+		else{
 			kill(pid, SIGUSR2);
+			printf("HERE\n");
+		}
+		usleep(50);
 		i--;
 	}
-	signal_check(counter);	
+	signal_check(i);
 }
 
 int	main(int ac, char **av)
@@ -67,8 +75,13 @@ int	main(int ac, char **av)
 	char				*s;
 	struct sigaction	sa;
 
-	if (ac > 2)
+	if (ac == 3)
 	{
+		sa.sa_sigaction = signal_keeper;
+		sa.sa_flags = SA_SIGINFO;
+		sigemptyset(&sa.sa_mask);
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
 		pid = ft_atoi(av[1]);
 		s = av[2];
 		while (*s)
@@ -80,24 +93,24 @@ int	main(int ac, char **av)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_atoi(char *s)
-{
-	int	sign;
-	int	res;
+// int	ft_atoi(char *s)
+// {
+// 	int	sign;
+// 	int	res;
 
-	res = 0;
-	sign = 1;
-	while (*s == 32 || (*s >= 9 && *s <= 13))
-		++s;
-	if (*s == '+' || *s == '-')
-	{
-		if (*s == '-')
-			sign *= -1;
-	}
-	while (*s >= '0' && *s <= '9')
-	{
-		res = res * 10 + (*s - '0');
-		++s;
-	}
-	return (res * sign);
-}
+// 	res = 0;
+// 	sign = 1;
+// 	while (*s == 32 || (*s >= 9 && *s <= 13))
+// 		++s;
+// 	if (*s == '+' || *s == '-')
+// 	{
+// 		if (*s == '-')
+// 			sign *= -1;
+// 	}
+// 	while (*s >= '0' && *s <= '9')
+// 	{
+// 		res = res * 10 + (*s - '0');
+// 		++s;
+// 	}
+// 	return (res * sign);
+// }

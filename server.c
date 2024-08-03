@@ -6,16 +6,16 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:52:59 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/03 16:47:51 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/03 17:55:50 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
-}
+// void	ft_putchar_fd(char c, int fd)
+// {
+// 	write(fd, &c, 1);
+// }
 void	signal_converter(int signb, char *c)
 {
 	if (signb == SIGUSR1)
@@ -24,12 +24,15 @@ void	signal_converter(int signb, char *c)
 		*c = *c << 1;
 }
 
-int	char_trick(int signb, siginfo_t *info, void *data)
+void	char_trick(int signb, siginfo_t *info, void *data)
 {
 	static int	i = 0;
 	static int	pid = 0;
 	static char	c = 0;
 
+	(void)data;
+	(void)info;
+	// printf("Signal %d received from PID %d\n", signb, info->si_pid);
 	if (pid == 0)
 		pid = info->si_pid;
 	signal_converter(signb, &c);
@@ -49,7 +52,6 @@ int	char_trick(int signb, siginfo_t *info, void *data)
 		}
 	}
 	kill(pid, SIGUSR2);
-	return (EXIT_SUCCESS);
 }
 
 int main(void)
@@ -57,9 +59,18 @@ int main(void)
 	struct sigaction	sa;
 
 	printf("SERVER IS STARTING\n");
-	printf("MY Server PID : %d\n", gepid());
+	printf("MY Server PID : %d\n", getpid());
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = char_trick;
+	if (sigaction(SIGUSR1, &sa, NULL))
+	
+		return (EXIT_FAILURE);
+	if (sigaction(SIGUSR2, &sa, NULL))
+		return (EXIT_FAILURE);
+	while (1)
+		pause();
+	return (EXIT_SUCCESS);
+	
 }
 

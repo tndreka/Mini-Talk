@@ -11,9 +11,9 @@ CLIENT = client
 
 SERVER = server
 
-SRC_CLIENT = client.c
+SRC_CLIENT = client.c utils.c
 
-SRC_SERVER = server.c
+SRC_SERVER = server.c utils.c
 
 OBJS_CLIENT = ${SRC_CLIENT:.c=.o}
 
@@ -25,7 +25,7 @@ ${CLIENT}: ${OBJS_CLIENT}
 	@make -sC ${PRINTFDIR}
 	@${CC} ${CFLAGS} -o ${CLIENT} ${OBJS_CLIENT} ${INCLUDE} -g
 
-${CLIENT}: ${OBJS_SERVER}
+${SERVER}: ${OBJS_SERVER}
 	@make -sC ${PRINTFDIR}
 	@${CC} ${CFLAGS} -o ${SERVER} ${OBJS_SERVER} ${INCLUDE} -g
 
