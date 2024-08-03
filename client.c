@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/03 21:59:38 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/03 23:36:33 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	signal_check(int counter)
 	g_sigreciver = 0;
 	while (g_sigreciver == 0 && counter > 0)
 	{
-		usleep(100);
+		usleep(10);
 		counter--;
 	}
 	return (0);

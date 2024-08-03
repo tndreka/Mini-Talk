@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:52:59 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/03 22:08:26 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/03 23:40:30 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ void	send_signal(siginfo_t *info, char *c, int *i)
 			kill(info->si_pid, SIGUSR1);
 		}
 		else
-			ft_putchar_fd(*c, STDOUT_FILENO);
+		{
+			write(1, c, 1);
+		}
 		(*c) = 0;
-	}
 	kill(info->si_pid, SIGUSR2);
+	}
 }
 
 void	char_trick(int signb, siginfo_t *info, void *data)
