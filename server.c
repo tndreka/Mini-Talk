@@ -6,60 +6,57 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:52:59 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/03 17:55:50 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/03 21:52:22 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-// void	ft_putchar_fd(char c, int fd)
-// {
-// 	write(fd, &c, 1);
-// }
-void	signal_converter(int signb, char *c)
+//This is the global variable  to track the PID of the sending process
+static int	g_pid = 0;
+
+void	send_signal(siginfo_t *info, char *c, int *i)
 {
-	if (signb == SIGUSR1)
-		*c = *c << 1 | 1;
-	else if (signb == SIGUSR2)
-		*c = *c << 1;
+	if ((*i) == 8)
+	{
+		(*i) = 0;
+		if ((*c) == '\0')
+		{
+			g_pid =	0;
+			kill(info->si_pid, SIGUSR1);
+		}
+		else
+			ft_putchar_fd(*c, STDOUT_FILENO);
+		(*c) = 0;
+	}
+	kill(info->si_pid, SIGUSR2);
 }
 
 void	char_trick(int signb, siginfo_t *info, void *data)
 {
 	static int	i = 0;
-	static int	pid = 0;
-	static char	c = 0;
+ 	static char	c = 0;
 
-	(void)data;
-	(void)info;
-	// printf("Signal %d received from PID %d\n", signb, info->si_pid);
-	if (pid == 0)
-		pid = info->si_pid;
-	signal_converter(signb, &c);
+ 	(void)data;
+ 	if (g_pid == 0)
+ 		g_pid = info->si_pid;
+ 	if (info->si_pid != g_pid)
+		return ;
+	if (signb == SIGUSR1)
+		c = (c << 1) | 1;
+	else if (signb == SIGUSR2)
+		c = (c << 1);
 	i++;
-	if (i == 8)
-	{
-		i = 0;
-		if (c == '\0')
-		{
-			kill(pid, SIGUSR1);
-			pid = 0;
-		}
-		else
-		{
-			ft_putchar_fd(c, STDOUT_FILENO);
-			c = 0;
-		}
-	}
-	kill(pid, SIGUSR2);
+	send_signal(info, &c, &i);
 }
+
 
 int main(void)
 {
 	struct sigaction	sa;
 
-	printf("SERVER IS STARTING\n");
-	printf("MY Server PID : %d\n", getpid());
+	ft_printf("SERVER IS STARTING\n");
+	ft_printf("MY Server PID : %d\n", getpid());
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = char_trick;

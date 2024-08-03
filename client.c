@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/03 18:07:26 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/03 19:34:29 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,24 @@ void	signal_keeper(int signb, siginfo_t *info, void *data)
 	if (signb == SIGUSR2)
 		i++;
 	else if (signb == SIGUSR1)
-		printf("bytes recived : %d", (i / 8));
+		ft_printf("bytes recived : %d", (i / 8));
 }
 
 int	signal_check(int counter)
 {
 	g_sigreciver = 0;
-	counter = 20;
 	while (g_sigreciver == 0 && counter > 0)
 	{
-		usleep(50);
+		usleep(100);
+		if (kill(0, 0) == -1) // Check if server is alive
+            return 1;
 		counter--;
 	}
-	if (g_sigreciver == 0)
-	{
-		printf("SENDING SIGNAL FAILD");
-		return (1);
-	}
+	// if (g_sigreciver == 0)
+	// {
+	// 	ft_printf("SENDING SIGNAL FAILD");
+	// 	return (1);
+	// }
 	return (0);
 }
 
@@ -54,19 +55,22 @@ void	binary_trick(int pid, char c)
 	i = 7;
 	while (i >= 0)
 	{
-		printf("i: %d\n", i);
+		ft_printf("i: %d\n", i);
 		if (((c >> i) & 1) == 1){
 			kill(pid, SIGUSR1);
-			printf("HEREB\n");
+			ft_printf("HEREB\n");
 		}
 		else{
 			kill(pid, SIGUSR2);
-			printf("HERE\n");
+			ft_printf("HERE\n");
 		}
-		usleep(50);
+		if (signal_check(20) != 0) {
+            ft_printf("Signal reception failed for bit %d\n", i);
+            return;
+        }
+		usleep(100);
 		i--;
 	}
-	signal_check(i);
 }
 
 int	main(int ac, char **av)
