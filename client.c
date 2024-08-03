@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/02 22:53:26 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/03 16:47:28 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,17 @@ void	binary_trick(int pid, char c)
 
 int	main(int ac, char **av)
 {
-	int		pid;
-	char	*s;
+	int					pid;
+	char				*s;
+	struct sigaction	sa;
 
 	if (ac > 2)
 	{
 		pid = ft_atoi(av[1]);
 		s = av[2];
-		binary_trick(pid, *s);
+		while (*s)
+			binary_trick(pid, *s++);
+		binary_trick(pid, '\0');
 	}
 	else
 		write(1, "ERROR", 5);
