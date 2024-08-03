@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/01 21:29:16 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/02 22:53:26 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	signal_keeper(int signb, siginfo_t *info, void *data)
 		printf("bytes recived : %d", (i / 8));
 }
 
-int	signal_check(int counter, int i)
+int	signal_check(int counter)
 {
 	g_sigreciver = 0;
 	counter = 20;
@@ -38,13 +38,13 @@ int	signal_check(int counter, int i)
 	}
 	if (g_sigreciver == 0)
 	{
-		printf("SENDING SIGNAL FAILD IN THIS BIT INDEX! ! ! ! %d", i);
+		printf("SENDING SIGNAL FAILD");
 		return (1);
 	}
 	return (0);
 }
 
-int	binary_trick(int pid, char c)
+void	binary_trick(int pid, char c)
 {
 	int		i;
 	int		counter;
@@ -58,7 +58,7 @@ int	binary_trick(int pid, char c)
 			kill(pid, SIGUSR2);
 		i--;
 	}
-	signal_check(&counter, i);
+	signal_check(counter);	
 }
 
 int	main(int ac, char **av)
@@ -70,7 +70,31 @@ int	main(int ac, char **av)
 	{
 		pid = ft_atoi(av[1]);
 		s = av[2];
-		send_info_per_bit(pid, s);
+		binary_trick(pid, *s);
 	}
-	write(1, "ERROR", 5);
+	else
+		write(1, "ERROR", 5);
+	return (EXIT_SUCCESS);
+}
+
+int	ft_atoi(char *s)
+{
+	int	sign;
+	int	res;
+
+	res = 0;
+	sign = 1;
+	while (*s == 32 || (*s >= 9 && *s <= 13))
+		++s;
+	if (*s == '+' || *s == '-')
+	{
+		if (*s == '-')
+			sign *= -1;
+	}
+	while (*s >= '0' && *s <= '9')
+	{
+		res = res * 10 + (*s - '0');
+		++s;
+	}
+	return (res * sign);
 }
