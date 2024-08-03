@@ -30,12 +30,12 @@ ${SERVER}: ${OBJS_SERVER}
 	@${CC} ${CFLAGS} -o ${SERVER} ${OBJS_SERVER} ${INCLUDE} -g
 
 clean:
-	@rm -f ${OBJS}
+	@rm -f ${OBJS_CLIENT} ${OBJS_SERVER}
 	@cd ${PRINTFDIR} && ${MAKE} clean
 
 fclean:
 	${MAKE} clean
-	@rm -f ${NAME}
+	@rm -f ${CLIENT} ${SERVER}
 	@cd ${PRINTFDIR} && ${MAKE} fclean
 
 re: fclean all

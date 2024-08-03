@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:52:59 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/03 21:52:22 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/03 22:08:26 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	send_signal(siginfo_t *info, char *c, int *i)
 		(*i) = 0;
 		if ((*c) == '\0')
 		{
-			g_pid =	0;
+			g_pid = 0;
 			kill(info->si_pid, SIGUSR1);
 		}
 		else
@@ -35,12 +35,12 @@ void	send_signal(siginfo_t *info, char *c, int *i)
 void	char_trick(int signb, siginfo_t *info, void *data)
 {
 	static int	i = 0;
- 	static char	c = 0;
+	static char	c = 0;
 
- 	(void)data;
- 	if (g_pid == 0)
- 		g_pid = info->si_pid;
- 	if (info->si_pid != g_pid)
+	(void)data;
+	if (g_pid == 0)
+		g_pid = info->si_pid;
+	if (info->si_pid != g_pid)
 		return ;
 	if (signb == SIGUSR1)
 		c = (c << 1) | 1;
@@ -50,8 +50,7 @@ void	char_trick(int signb, siginfo_t *info, void *data)
 	send_signal(info, &c, &i);
 }
 
-
-int main(void)
+int	main(void)
 {
 	struct sigaction	sa;
 
@@ -61,13 +60,10 @@ int main(void)
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = char_trick;
 	if (sigaction(SIGUSR1, &sa, NULL))
-	
 		return (EXIT_FAILURE);
 	if (sigaction(SIGUSR2, &sa, NULL))
 		return (EXIT_FAILURE);
 	while (1)
 		pause();
 	return (EXIT_SUCCESS);
-	
 }
-

@@ -6,7 +6,7 @@
 /*   By: tndreka <tndreka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 03:43:09 by tndreka           #+#    #+#             */
-/*   Updated: 2024/08/03 19:34:29 by tndreka          ###   ########.fr       */
+/*   Updated: 2024/08/03 21:59:38 by tndreka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,8 @@ int	signal_check(int counter)
 	while (g_sigreciver == 0 && counter > 0)
 	{
 		usleep(100);
-		if (kill(0, 0) == -1) // Check if server is alive
-            return 1;
 		counter--;
 	}
-	// if (g_sigreciver == 0)
-	// {
-	// 	ft_printf("SENDING SIGNAL FAILD");
-	// 	return (1);
-	// }
 	return (0);
 }
 
@@ -51,24 +44,15 @@ void	binary_trick(int pid, char c)
 {
 	int		i;
 
-
 	i = 7;
 	while (i >= 0)
 	{
-		ft_printf("i: %d\n", i);
-		if (((c >> i) & 1) == 1){
+		if (((c >> i) & 1) == 1)
 			kill(pid, SIGUSR1);
-			ft_printf("HEREB\n");
-		}
-		else{
+		else
 			kill(pid, SIGUSR2);
-			ft_printf("HERE\n");
-		}
-		if (signal_check(20) != 0) {
-            ft_printf("Signal reception failed for bit %d\n", i);
-            return;
-        }
-		usleep(100);
+		if (signal_check(20) != 0)
+			return ;
 		i--;
 	}
 }
@@ -96,25 +80,3 @@ int	main(int ac, char **av)
 		write(1, "ERROR", 5);
 	return (EXIT_SUCCESS);
 }
-
-// int	ft_atoi(char *s)
-// {
-// 	int	sign;
-// 	int	res;
-
-// 	res = 0;
-// 	sign = 1;
-// 	while (*s == 32 || (*s >= 9 && *s <= 13))
-// 		++s;
-// 	if (*s == '+' || *s == '-')
-// 	{
-// 		if (*s == '-')
-// 			sign *= -1;
-// 	}
-// 	while (*s >= '0' && *s <= '9')
-// 	{
-// 		res = res * 10 + (*s - '0');
-// 		++s;
-// 	}
-// 	return (res * sign);
-// }
